@@ -2,9 +2,12 @@ from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 from django.conf import settings
+from decouple import config
 
 from celery.schedules import crontab
 from datetime import timedelta
+
+REDIS_BROKER_URL = config('REDIS_BROKER_URL')
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_celery.settings')
@@ -25,9 +28,7 @@ app.conf.broker_transport_options = {
 app.conf.broker_connection_retry_on_startup = True
 app.conf.worker_cancel_long_running_tasks_on_connection_loss = True
 
-
-app.conf.broker_url = 'redis://127.0.0.1:6379'
-app.conf.broker_url = 'rediss://red-crijpg5umphs73clca40:3A5MbWiLulXlRsIBMFtj7n9RAmQyJ4I5@oregon-redis.render.com:6379' 
+app.conf.broker_url = REDIS_BROKER_URL
 app.conf.accept_content = ['json']
 app.conf.task_serializer = 'json'
 app.conf.result_serializer = 'json' 

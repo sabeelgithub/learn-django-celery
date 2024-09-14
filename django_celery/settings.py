@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dcdvixqvrkro*75dnx!s9axz)v_$n%y_pg8qh2=%bv&f(#zbhb'
+
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG',cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -78,12 +80,41 @@ WSGI_APPLICATION = 'django_celery.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+NAME = config("POSTGRES_DB")
+PASSWORD = config("POSTGRES_PASSWORD")
+POSTGRES_USER = config("POSTGRES_USER")
+POSTGRES_HOST = config("POSTGRES_HOST")
+
+# for using docker
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": NAME,
+        "USER": POSTGRES_USER,
+        "PASSWORD": PASSWORD,
+        "HOST": POSTGRES_HOST,
+        "PORT": 5432,
     }
 }
+
+# for local using venv
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": NAME,
+#         "USER": POSTGRES_USER,
+#         "PASSWORD": PASSWORD,
+#         "PORT": 5433,
+#         "HOST": "localhost", 
+#     }
+# }
 
 
 # Password validation

@@ -26,7 +26,7 @@ from django.views.static import serve
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Setelia APIs",
+      title="django_celery APIs",
       default_version='v1',
       description="Test description",
       terms_of_service="https://www.google.com/policies/terms/",
