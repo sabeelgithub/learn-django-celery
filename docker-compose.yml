@@ -31,7 +31,39 @@ services:
     container_name: django-celery-redis
     volumes:
       - redis-data:/data
-
+    ports:
+      - "6379:6379"
+  
+  celery-worker:
+    image: python-django-celery
+    container_name: django-celery-worker
+    build:
+       context: .
+       dockerfile: Dockerfile
+    command: celery -A django_celery worker --pool=solo -l info
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+  
+  celery-beat:
+    image: python-django-celery
+    container_name: django-celery-beat
+    build:
+       context: .
+       dockerfile: Dockerfile
+    command: celery -A django_celery beat --loglevel=info
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+  
 volumes:
   postgres-data:
   redis-data:
