@@ -1,7 +1,7 @@
 from celery import shared_task
-from datetime import timedelta,datetime
-from .models import Tip
+from datetime import timedelta
 from django.utils import timezone
+from .models import Tip
 
 import logging
 

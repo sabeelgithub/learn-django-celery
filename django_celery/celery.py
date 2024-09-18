@@ -33,7 +33,8 @@ app.conf.accept_content = ['json']
 app.conf.task_serializer = 'json'
 app.conf.result_serializer = 'json' 
 app.conf.timezone = 'Asia/Kolkata'
-app.conf.result_backend = 'django-db'
+app.conf.result_backend = REDIS_BROKER_URL
+# app.conf.result_backend = 'django-db'
 
 # Autodiscover tasks from all registered Django app configs.
 app.autodiscover_tasks()
